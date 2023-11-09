@@ -3,20 +3,25 @@
 import { useEffect, useState } from 'react';
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState('light');
+  // Initialize theme state to 'dark' or the stored theme in localStorage
+  const [theme, setTheme] = useState(() => {
+    const storedTheme = localStorage.getItem('theme');
+    return storedTheme || 'dark'; // Default to 'dark' if no theme is stored
+  });
 
-  // Appliquer la classe dark ou light au body
+  // Apply the theme class to the root element and store the theme in localStorage
   useEffect(() => {
     const root = window.document.documentElement;
-    const isDark = localStorage.getItem('theme') === 'dark';
 
-    root.classList.remove(isDark ? 'light' : 'dark');
+    // Remove both classes before adding the desired one to prevent conflicts
+    root.classList.remove('light', 'dark');
     root.classList.add(theme);
 
+    // Store the selected theme in localStorage
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  // Basculer le thème
+  // Toggle the theme between 'light' and 'dark'
   const toggleTheme = () => {
     setTheme((curr) => (curr === 'light' ? 'dark' : 'light'));
   };
