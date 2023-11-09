@@ -1,6 +1,7 @@
 import { NAV_LINKS } from "@constants"
 import Image from "next/image"
 import Link from "next/link"
+import ThemeToggle from "@components/ThemeToggle"
 
 export const Navbar = () => {
   return (
@@ -9,7 +10,7 @@ export const Navbar = () => {
         <Image src="/" alt="logo" width={74} height={29} />
       </Link>
 
-      
+
       <ul className="hidden h-full gap-12 sm:flex">
         {NAV_LINKS.map((link) => (
           <Link
@@ -21,6 +22,8 @@ export const Navbar = () => {
           </Link>
         ))}
       </ul>
+
+      <ThemeToggle/>
 
     </nav>
   );
