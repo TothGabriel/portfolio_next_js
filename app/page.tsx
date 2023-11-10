@@ -1,9 +1,26 @@
 import Image from "next/image";
+import Hero from '@components/Hero'
+import ProjectFeed from '@components/ProjectFeed'
+import SkillFeed from "@components/SkillFeed";
 
-export default function Home() {
+// export default function Home() {
+//   return (
+//     <>
+//       <Hero/>
+//       <ProjectFeed/>
+//       <SkillFeed/>
+//     </>
+//   );
+// }
+
+const Home = () => {
   return (
     <>
-      <div className="bg-slate-400">Home</div>
+      <Hero/>
+      <ProjectFeed/>
+      <SkillFeed/>
     </>
   );
 }
+
+export default Home;
