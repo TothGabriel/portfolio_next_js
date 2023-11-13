@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { NAV_LINKS } from "@constants";
 import Image from "next/image";
@@ -45,41 +45,43 @@ export const Navbar = () => {
         ))}
       </ul>
 
-      {session?.user ? (
-        <>
-          <button type="button" onClick={signOut} className="outline_btn">
-            Sign Out
-          </button>
+      <div className="flex">
+        {session?.user ? (
+          <>
+            <button type="button" onClick={signOut} className="btn btn-1 me-3">
+              Se déconnecter
+            </button>
 
-          <Link href="/profile">
-            <Image
-              src={session?.user.image}
-              width={37}
-              height={37}
-              className="rounded-full"
-              alt="profile"
-            />
-          </Link>
-        </>
-      ) : (
-        <>
-          {providers &&
-            Object.values(providers).map((provider) => (
-              <button
-                type="button"
-                key={provider.name}
-                onClick={() => {
-                  signIn(provider.id);
-                }}
-                className="black_btn"
-              >
-                Sign in
-              </button>
-            ))}
-        </>
-      )}
+            <Link href="/profile">
+              <Image
+                src={session?.user.image}
+                width={37}
+                height={37}
+                className="rounded-full me-3"
+                alt="profile"
+              />
+            </Link>
+          </>
+        ) : (
+          <>
+            {providers &&
+              Object.values(providers).map((provider) => (
+                <button
+                  type="button"
+                  key={provider.name}
+                  onClick={() => {
+                    signIn(provider.id);
+                  }}
+                  className="btn btn-1 me-3"
+                >
+                  Se connecter
+                </button>
+              ))}
+          </>
+        )}
 
-      <ThemeToggle />
+        <ThemeToggle />
+      </div>
     </nav>
   );
 };
