@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
+import ProjectFeed from "@components/ProjectFeed";
 import Profile from "@components/Profile";
 
 const MyProfile = () => {

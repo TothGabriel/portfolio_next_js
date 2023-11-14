@@ -16,7 +16,7 @@ export const GET = async (request, { params }) => {
 }
 
 export const PATCH = async (request, { params }) => {
-    const { project, tag } = await request.json();
+    const { title, content_short, tags } = await request.json();
 
     try {
         await connectToDB();
@@ -29,8 +29,9 @@ export const PATCH = async (request, { params }) => {
         }
 
         // Update the project with new data
-        existingProject.project = project;
-        existingProject.tag = tag;
+        existingProject.title = title;
+        existingProject.content_short = content_short;
+        existingProject.tags = tags;
 
         await existingProject.save();
 

@@ -19,8 +19,9 @@ const UpdateProject = () => {
       const data = await response.json();
 
       setProject({
-        project: data.project,
-        tag: data.tag,
+        title : data.title,
+        content_short: data.content_short,
+        tags: data.tags,
       });
     };
 
@@ -37,8 +38,8 @@ const UpdateProject = () => {
       const response = await fetch(`/api/project/${projectId}`, {
         method: "PATCH",
         body: JSON.stringify({
-          project: project.project,
-          tag: project.tag,
+          content_short: project.content_short,
+          tags: project.tags,
         }),
       });
 
