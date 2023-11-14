@@ -74,7 +74,6 @@ const MyProfile = () => {
       handleEdit={handleEdit}
       handleDelete={handleDelete}
     />
-    <p>test</p>
     </>
 
   );

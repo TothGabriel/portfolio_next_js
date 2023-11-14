@@ -10,19 +10,23 @@ const UpdateProject = () => {
   const searchParams = useSearchParams();
   const projectId = searchParams.get("id");
 
-  const [project, setProject] = useState({ project: "", tag: "", });
+  const [projectData, setProjectData] = useState({ title: "", content_short: "", tags: [] });
   const [submitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const getProjectDetails = async () => {
-      const response = await fetch(`/api/project/${projectId}`);
-      const data = await response.json();
-
-      setProject({
-        title : data.title,
-        content_short: data.content_short,
-        tags: data.tags,
-      });
+      try {
+        const response = await fetch(`/api/projects/${projectId}`);
+        const data = await response.json();
+        console.log(data);
+        setProjectData({
+          title: data.title,
+          content_short: data.content_short,
+          tags: data.tags || [], // Assurez-vous que tags est un tableau
+        });
+      } catch (error) {
+        console.error("Error fetching project details:", error);
+      }
     };
 
     if (projectId) getProjectDetails();
@@ -35,19 +39,22 @@ const UpdateProject = () => {
     if (!projectId) return alert("Missing ProjectId!");
 
     try {
-      const response = await fetch(`/api/project/${projectId}`, {
+      const response = await fetch(`/api/projects/${projectId}`, {
         method: "PATCH",
         body: JSON.stringify({
-          content_short: project.content_short,
-          tags: project.tags,
+          title: projectData.title,
+          content_short: projectData.content_short,
+          tags: projectData.tags,
         }),
       });
 
       if (response.ok) {
         router.push("/");
+      } else {
+        console.error("Error updating project:", response.statusText);
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error updating project:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -55,9 +62,9 @@ const UpdateProject = () => {
 
   return (
     <Form
-      type='Edit'
-      project={project}
-      setProject={setProject}
+      type="Edit"
+      project={projectData}
+      setProject={setProjectData}
       submitting={submitting}
       handleSubmit={updateProject}
     />

@@ -5,7 +5,7 @@ import ProjectCard from "@components/ProjectCard";
 import { useSession } from "next-auth/react";
 
 
-const ProjectCardList = ({ data, handleTagClick, isAdmin }) => {
+const ProjectCardList = ({ data, handleTagClick }) => {
   return (
     <div className="flex flex-wrap">
       {data.map((project) => (
@@ -13,7 +13,6 @@ const ProjectCardList = ({ data, handleTagClick, isAdmin }) => {
           key={project._id}
           project={project}
           handleTagClick={handleTagClick}
-          isAdmin={isAdmin}
         />
       ))}
     </div>
@@ -107,13 +106,11 @@ const ProjectFeed = () => {
           {searchText ? (
             <ProjectCardList
               data={searchedResults}
-              isAdmin={isAdmin}
               handleTagClick={handleTagClick}
             />
           ) : (
             <ProjectCardList
               data={allProjects}
-              isAdmin={isAdmin}
               handleTagClick={handleTagClick}
             />
           )}

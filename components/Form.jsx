@@ -2,14 +2,11 @@ import Link from "next/link";
 import { useState } from "react";
 
 const Form = ({ type, project, setProject, submitting, handleSubmit }) => {
+  // Assurez-vous que project.tags est toujours un tableau
+  if (!project.tags) {
+    setProject({ ...project, tags: [] });
+  }
 
- // Assurez-vous que project.tags est toujours un tableau
-    if (!project.tags) {
-      setProject({ ...project, tags: [] });
-    }
-
-
-    console.log(project);
   return (
     <section className="w-full max-w-full flex-start flex-col">
       <h1 className="head_text text-left">
@@ -55,18 +52,18 @@ const Form = ({ type, project, setProject, submitting, handleSubmit }) => {
             </span>
           </span>
           <input
-          value={project.tags ? project.tags.join(", ") : ""} // Vérifiez si project.tags existe avant d'appeler join
-          onChange={(e) =>
-            setProject({
-              ...project,
-              tags: e.target.value.split(",").map((tag) => tag.trim()),
-            })
-          }
-          type="text"
-          placeholder="#Tags (séparées par des virgules)"
-          required
-          className="form_input"
-        />
+            value={project.tags.join(", ")} // Convertit le tableau de tags en une chaîne séparée par des virgules
+            onChange={(e) =>
+              setProject({
+                ...project,
+                tags: e.target.value.split(",").map((tag) => tag.trim()), // Convertit la chaîne en un tableau de tags
+              })
+            }
+            type="text"
+            placeholder="#Tags (séparées par des virgules)"
+            required
+            className="form_input"
+          />
         </label>
 
         <div className="flex-end mx-3 mb-5 gap-4">
