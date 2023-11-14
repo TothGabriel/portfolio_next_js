@@ -30,26 +30,34 @@ const ProjectFeed = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const fetchProjects = async () => {
-    const response = await fetch("/api/projects");
-    const data = await response.json();
-    // console.log(data);
-    setAllProjects(data);
+    try {
+      const response = await fetch("/api/projects");
+      const data = await response.json();
+      setAllProjects(data);
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+    }
   };
-  
+
   const fetchUserRole = async () => {
-    const response = await fetch(`/api/users/${session?.user.id}`);
-    const data = await response.json();
-    console.log(data);
-    console.log(session);
-    if (data.role === "admin") setIsAdmin(true);
+    try {
+      if (session?.user?.id) {
+        const response = await fetch(`/api/users/${session.user.id}`);
+        const data = await response.json();
+        console.log(data);
+        console.log(session);
+        if (data.role === "admin") setIsAdmin(true);
+      }
+    } catch (error) {
+      console.error('Error fetching user role:', error);
+    }
   };
 
   useEffect(() => {
     fetchUserRole();
     fetchProjects();
-    
     console.log(isAdmin);
-  }, []);
+  }, [session]);
 
   const filterprojects = (searchText) => {
     const regex = new RegExp(searchText, "i"); // 'i' flag for case-insensitive search
