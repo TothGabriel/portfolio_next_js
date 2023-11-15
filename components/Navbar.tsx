@@ -21,7 +21,7 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <nav className="flex justify-between w-full  relative z-30 py-5 px-5">
+    <nav className="flex justify-between w-full  relative z-30 py-5 px-5 shadow-md">
       <Link href="/" className="flex gap-2 flex-center">
         <Image
           src="/"

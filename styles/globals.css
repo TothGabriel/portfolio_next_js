@@ -23,3 +23,6 @@ body {
   @apply bg-blue-500 hover:bg-blue-700 text-white border-blue-700;
 }
 
+input, textarea {
+  @apply px-4 py-2 mt-2 text-gray-700 bg-gray-200 border border-gray-200 rounded dark:text-gray-800 dark:bg-slate-600;
+}
