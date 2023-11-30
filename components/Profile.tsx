@@ -1,4 +1,4 @@
-import ProjectCard from "./ProjectCard";
+import ProjectCard from "@components/ProjectCard";
 
 const Profile = ({ name, desc, data, handleEdit, handleDelete, isAdmin }) => {
   // console.log(data);
