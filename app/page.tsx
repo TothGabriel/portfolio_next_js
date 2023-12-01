@@ -6,6 +6,7 @@ import ProjectFeed from "@components/ProjectFeed";
 import SkillFeed from "@components/SkillFeed";
 import CommentFeed from "@components/CommentFeed";
 import CommentForm from "@components/CommentForm";
+import Contact from "@components/Contact";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -57,6 +58,7 @@ const Home = () => {
             ))} */}
         </>
       )}
+      <Contact/>
     </>
   );
 };

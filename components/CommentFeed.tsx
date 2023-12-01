@@ -12,8 +12,6 @@ const CommentFeed = () => {
       const response = await fetch("/api/comments");
       const data = await response.json();
       setAllComments(data);
-      console.log("dedans");
-      console.log(data);
     } catch (error) {
       console.error("Error fetching comments:", error);
     }
@@ -24,7 +22,7 @@ const CommentFeed = () => {
   }, []);
 
   return (
-    <section className="w-full flex justify-center">
+    <section className="w-full flex justify-center py-5">
       <div className="container">
         <div className="flex flex-wrap">
           {allComments.map((comment) => (

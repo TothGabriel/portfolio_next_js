@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-const CommentForm = ({ projectId, session }) => {
+const CommentForm = ({ project_id, session }) => {
   const [commentData, setCommentData] = useState({
-    userId: session?.user?.id,
-    userName: session?.user?.name || "Anonyme", // Remplace-le par la logique d'authentification de ton application
-    projectId: projectId || "",
+    user_id: session?.user?.id,
+    project_id: project_id || "",
     content: "",
+    created_at: "",
   });
 
   const handleInputChange = (e) => {
@@ -19,14 +19,30 @@ const CommentForm = ({ projectId, session }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Get the current date and time
+    const currentDate = new Date();
+    // Format the date as a string (adjust the format as needed)
+    // const formattedDate = currentDate.toISOString();
     try {
       const response = await fetch(`/api/comments/new`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(commentData),
+        body: JSON.stringify({
+          ...commentData,
+          created_at: currentDate,
+        }),
       });
+
+      // try {
+      //   const response = await fetch(`/api/comments/new`, {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify(commentData),
+      //   });
 
       if (response.ok) {
         // La requête a réussi
@@ -35,10 +51,10 @@ const CommentForm = ({ projectId, session }) => {
 
         // Réinitialise les champs du formulaire après la soumission
         setCommentData({
-          userId: session?.user?.id,
-          userName: session?.user?.name || "Anonyme", // Remplace-le par la logique d'authentification de ton application
-          projectId: projectId || "",
+          user_id: session?.user?.id,
+          project_id: project_id || "",
           content: "",
+          created_at: "",
         });
       } else {
         // La requête a échoué
