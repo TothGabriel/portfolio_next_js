@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-const Form = ({ type, project, setProject, submitting, handleSubmit }) => {
+const ProjectForm = ({ type, project, setProject, submitting, handleSubmit }) => {
   // Assurez-vous que project.tags est toujours un tableau
   if (!project.tags) {
     setProject({ ...project, tags: [] });
@@ -25,6 +25,7 @@ const Form = ({ type, project, setProject, submitting, handleSubmit }) => {
               onChange={(e) =>
                 setProject({ ...project, title: e.target.value })
               }
+              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
 
             <label>
@@ -39,7 +40,7 @@ const Form = ({ type, project, setProject, submitting, handleSubmit }) => {
               }
               placeholder="Description du projet"
               required
-              className="form_textarea"
+              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
 
             <label>
@@ -61,7 +62,7 @@ const Form = ({ type, project, setProject, submitting, handleSubmit }) => {
               type="text"
               placeholder="#Tags (séparées par des virgules)"
               required
-              className="form_input"
+              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
 
             <div className="flex-end mx-3 mb-5 gap-4">
@@ -84,4 +85,4 @@ const Form = ({ type, project, setProject, submitting, handleSubmit }) => {
   );
 };
 
-export default Form;
+export default ProjectForm;

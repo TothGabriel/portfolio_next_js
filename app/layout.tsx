@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }) => (
   <html className="" lang="en">
-    <body className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
+    <body className="bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
       <Provider>
         <main className="relative overflow-hidden">
           <Navbar />
