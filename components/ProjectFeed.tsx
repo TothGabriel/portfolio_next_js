@@ -3,10 +3,11 @@
 import { useState, useEffect } from "react";
 import ProjectCard from "@components/ProjectCard";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-const ProjectCardList = ({ data, handleTagClick }) => {
+const ProjectCardList = ({ data, handleTagClick, handleEdit }) => {
   return (
-    <div className="flex flex-wrap">
+    <div className="flex flex-wrap gap-5">
       {data.map((project) => (
         <ProjectCard
           key={project._id}
@@ -20,12 +21,11 @@ const ProjectCardList = ({ data, handleTagClick }) => {
 
 const ProjectFeed = () => {
   const [allProjects, setAllProjects] = useState([]);
-  const { data: session } = useSession();
+  const router = useRouter();
   // Search states
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   const fetchProjects = async () => {
     try {
@@ -37,25 +37,9 @@ const ProjectFeed = () => {
     }
   };
 
-  const fetchUserRole = async () => {
-    try {
-      if (session?.user?.id) {
-        const response = await fetch(`/api/users/${session.user.id}`);
-        const data = await response.json();
-        console.log(data);
-        console.log(session);
-        if (data.role === "admin") setIsAdmin(true);
-      }
-    } catch (error) {
-      console.error("Error fetching user role:", error);
-    }
-  };
-
   useEffect(() => {
-    fetchUserRole();
     fetchProjects();
-    console.log(isAdmin);
-  }, [session]);
+  }, []);
 
   const filterprojects = (searchText) => {
     const regex = new RegExp(searchText, "i"); // 'i' flag for case-insensitive search
@@ -86,6 +70,8 @@ const ProjectFeed = () => {
     const searchResult = filterprojects(tagName);
     setSearchedResults(searchResult);
   };
+
+  
 
   return (
     <section className="feed">

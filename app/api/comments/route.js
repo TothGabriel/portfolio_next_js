@@ -8,6 +8,7 @@ export const GET = async (request) => {
         await connectToDB()
         console.log('in');
         const comments = await Comment.find({})
+        // console.log(comments);
         return new Response(JSON.stringify(comments), { status: 200 })
     } catch (error) {
         return new Response("Failed to fetch all comments", { status: 500 })

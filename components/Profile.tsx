@@ -6,9 +6,8 @@ import ProjectCard from "@components/ProjectCard";
 import { usePathname, useRouter } from "next/navigation";
 
 const Profile = ({ session, isAdmin }) => {
-
   const router = useRouter();
-  
+
   useEffect(() => {
     // Sélectionnez les éléments DOM nécessaires
     const tabsElement = document.getElementById("tabs");
@@ -75,8 +74,8 @@ const Profile = ({ session, isAdmin }) => {
   }, [session]);
 
   const createProject = () => {
-      router.push(`/create-project`);
-    };
+    router.push(`/create-project`);
+  };
 
   // const handleEdit = (project) => {
   //   router.push(`/update-project?id=${project._id}`);
@@ -192,28 +191,37 @@ const Profile = ({ session, isAdmin }) => {
               alt="Rounded avatar"
             />
           </div>
-          <div
-            className="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full"
-            id="projects"
-            role="tabpanel"
-            aria-labelledby="project-tab"
-          >
-            {/* Contenu de l'onglet Profile */}
-            <div className="flex justify-between">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-                Mes projets
-              </h3>
-              <button onClick={createProject} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Créer un projet
-              </button>
-            </div>
 
-            <div className="flex flex-wrap">
-              {allProjects.map((project) => (
-                <ProjectCard key={project._id} project={project} />
-              ))}
+          {isAdmin ? (
+            <div
+              className="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full"
+              id="projects"
+              role="tabpanel"
+              aria-labelledby="project-tab"
+            >
+              {/* Contenu de l'onglet Profile */}
+              <div className="flex justify-between">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+                  Mes projets
+                </h3>
+                <button
+                  onClick={createProject}
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Créer un projet
+                </button>
+              </div>
+
+              <div className="flex flex-wrap">
+                {allProjects.map((project) => (
+                  <ProjectCard key={project._id} project={project} />
+                ))}
+              </div>
             </div>
-          </div>
+          ) : (
+            ""
+          )}
+
           <div
             className="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full"
             id="comments"

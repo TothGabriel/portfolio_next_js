@@ -1,7 +1,14 @@
 import Link from "next/link";
 import { useState } from "react";
+import { ClipLoader } from 'react-spinners';
 
-const ProjectForm = ({ type, project, setProject, submitting, handleSubmit }) => {
+const ProjectForm = ({
+  type,
+  project,
+  setProject,
+  submitting,
+  handleSubmit,
+}) => {
   // Assurez-vous que project.tags est toujours un tableau
   if (!project.tags) {
     setProject({ ...project, tags: [] });
@@ -75,7 +82,12 @@ const ProjectForm = ({ type, project, setProject, submitting, handleSubmit }) =>
                 disabled={submitting}
                 className="px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white"
               >
-                {submitting ? `${type}ing...` : type}
+                {type}
+                {submitting && (
+                  <span className="absolute inset-0 flex items-center justify-center">
+                    <ClipLoader color="#fff" size={20} />
+                  </span>
+                )}
               </button>
             </div>
           </form>

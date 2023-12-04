@@ -5,19 +5,17 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 
-const ProjectCard = ({
-  project,
-  handleEdit,
-  handleDelete,
-  handleTagClick,
-  isAdmin,
-}) => {
+const ProjectCard = ({ project, handleTagClick }) => {
   const { data: session } = useSession();
   const pathName = usePathname();
   const router = useRouter();
 
+  const handleEdit = () => {
+    router.push(`/update-project?id=${project._id}`);
+  };
+
   return (
-    <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div className="flex-1 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <a href="#">
         <Image
           src={project.imageUrl}
@@ -45,7 +43,7 @@ const ProjectCard = ({
             ))}
           </ul>
         ) : null}
-        <a
+        {/* <a
           href="#"
           className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
@@ -65,8 +63,8 @@ const ProjectCard = ({
               d="M1 5h12m0 0L9 1m4 4L9 9"
             />
           </svg>
-        </a>
-        {isAdmin === true && pathName === "/profile" && (
+        </a> */}
+        {session?.user.isAdmin === true && (
           <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
             <p
               className="font-inter text-sm green_gradient cursor-pointer"
@@ -76,7 +74,7 @@ const ProjectCard = ({
             </p>
             <p
               className="font-inter text-sm orange_gradient cursor-pointer"
-              onClick={handleDelete}
+              // onClick={handleDelete}
             >
               Supprimer
             </p>

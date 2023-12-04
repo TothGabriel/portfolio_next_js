@@ -8,8 +8,6 @@ export const GET = async (request, { params }) => {
         const project = await Project.findById(params.id);
         if (!project) return new Response("Project Not Found", { status: 404 });
 
-        console.log("Project details:", project); // Ajoutez cette ligne pour voir les détails dans les logs
-
         return new Response(JSON.stringify(project), { status: 200 });
 
     } catch (error) {

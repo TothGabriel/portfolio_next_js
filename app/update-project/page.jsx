@@ -2,38 +2,45 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 
-import Form from "@components/Form";
+import ProjectForm from "@components/ProjectForm";
 
 const UpdateProject = () => {
   const router = useRouter();
+  const { data: session } = useSession();
   const searchParams = useSearchParams();
   const projectId = searchParams.get("id");
 
-  const [projectData, setProjectData] = useState({ title: "", content_short: "", tags: [] });
+  const [project, setProject] = useState({
+    title: "",
+    content_short: "",
+    tags: [],
+  });
   const [submitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    const getProjectDetails = async () => {
-      try {
-        const response = await fetch(`/api/projects/${projectId}`);
-        const data = await response.json();
-        console.log(data);
-        setProjectData({
-          title: data.title,
-          content_short: data.content_short,
-          tags: data.tags || [], // Assurez-vous que tags est un tableau
-        });
-      } catch (error) {
-        console.error("Error fetching project details:", error);
-      }
-    };
+  const getProjectDetails = async () => {
+    try {
+      const response = await fetch(`/api/projects/${projectId}`);
+      const data = await response.json();
+      setProject({
+        title: data.title,
+        content_short: data.content_short,
+        tags: data.tags || [], // Assurez-vous que tags est un tableau
+      });
+    } catch (error) {
+      console.error("Error fetching project details:", error);
+    }
+  };
 
+  useEffect(() => {
+    console.log(projectId);
     if (projectId) getProjectDetails();
   }, [projectId]);
 
-  const updateProject = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     setIsSubmitting(true);
 
     if (!projectId) return alert("Missing ProjectId!");
@@ -42,14 +49,14 @@ const UpdateProject = () => {
       const response = await fetch(`/api/projects/${projectId}`, {
         method: "PATCH",
         body: JSON.stringify({
-          title: projectData.title,
-          content_short: projectData.content_short,
-          tags: projectData.tags,
+          title: project.title,
+          content_short: project.content_short,
+          tags: project.tags,
         }),
       });
 
       if (response.ok) {
-        router.push("/");
+        router.push("/profile");
       } else {
         console.error("Error updating project:", response.statusText);
       }
@@ -61,13 +68,20 @@ const UpdateProject = () => {
   };
 
   return (
-    <Form
-      type="Edit"
-      project={projectData}
-      setProject={setProjectData}
-      submitting={submitting}
-      handleSubmit={updateProject}
-    />
+    <>
+      {session?.user?.isAdmin ? (
+        <ProjectForm
+          type="Mettre à jour"
+          project={project}
+          setProject={setProject}
+          submitting={submitting}
+          handleSubmit={handleSubmit}
+        />
+      ) : (
+        "Access forbidden"
+      )}
+      ;
+    </>
   );
 };
 

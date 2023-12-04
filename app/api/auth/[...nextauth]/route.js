@@ -17,6 +17,9 @@ const handler = NextAuth({
       const sessionUser = await User.findOne({ email: session.user.email });
       session.user.id = sessionUser._id.toString();
 
+      // Determine if the user is an admin
+      session.user.isAdmin = sessionUser.role === 'admin';
+
       return session;
     },
     async signIn({ account, profile, user, credentials }) {

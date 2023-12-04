@@ -5,16 +5,16 @@ const ProjectSchema = new Schema({
     type: String,
     required: [true, 'Title is required.'],
   },
-  imageUrl : {
-    type: String,
-    required: [true, 'ImageUrl is required.'],
-  },
   content_short: {
     type: String,
     required: [true, 'content_short is required.'],
   },
-  tag: {
+  tags: {
     type: Array,
+  },
+  imageUrl : {
+    type: String,
+    default: '',
   }
 });
 
