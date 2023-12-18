@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Tabs } from "flowbite";
 import Image from "next/image";
 import ProjectCard from "@components/ProjectCard";
+import CommentFeed from "@components/CommentFeed";
 import { usePathname, useRouter } from "next/navigation";
 
 const Profile = ({ session, isAdmin }) => {
@@ -54,52 +55,39 @@ const Profile = ({ session, isAdmin }) => {
   }, []); // Assurez-vous que cela se déclenche une seule fois après le rendu initial
 
   const [allProjects, setAllProjects] = useState([]);
+  const [MyComments, setMyComments] = useState([]);
 
   const fetchProjects = async () => {
     try {
       const response = await fetch("/api/projects");
       const data = await response.json();
       setAllProjects(data);
-      console.log(data);
     } catch (error) {
       console.error("Error fetching projects:", error);
     }
   };
 
+  const fetchMyComments = async () => {
+    try {
+      const response = await fetch(`/api/comments/getCommentsByUserId/${session?.user?.id}`);
+      const data = await response.json();
+      setMyComments(data);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
+  };
+  
+
   useEffect(() => {
     if (isAdmin === true) {
-      console.log("innn");
       fetchProjects();
     }
+    fetchMyComments();
   }, [session]);
 
   const createProject = () => {
     router.push(`/create-project`);
   };
-
-  // const handleEdit = (project) => {
-  //   router.push(`/update-project?id=${project._id}`);
-  // };
-
-  // const handleDelete = async (project) => {
-  //   const hasConfirmed = confirm(
-  //     "Are you sure you want to delete this project?"
-  //   );
-
-  //   if (hasConfirmed) {
-  //     try {
-  //       await fetch(`/api/project/${project._id.toString()}`, {
-  //         method: "DELETE",
-  //       });
-
-  //       const filteredProjects = myProjects.filter((item) => item._id !== project._id);
-
-  //       setMyProjects(filteredProjects);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // };
 
   return (
     <section className="w-full flex justify-center">
@@ -200,7 +188,7 @@ const Profile = ({ session, isAdmin }) => {
               aria-labelledby="project-tab"
             >
               {/* Contenu de l'onglet Profile */}
-              <div className="flex justify-between">
+              <div className="flex justify-between mb-5">
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
                   Mes projets
                 </h3>
@@ -212,7 +200,9 @@ const Profile = ({ session, isAdmin }) => {
                 </button>
               </div>
 
-              <div className="flex flex-wrap">
+
+
+              <div className="flex flex-wrap gap-5">
                 {allProjects.map((project) => (
                   <ProjectCard key={project._id} project={project} />
                 ))}
@@ -230,17 +220,9 @@ const Profile = ({ session, isAdmin }) => {
           >
             {/* Contenu de l'onglet Profile */}
             <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-              OUEEEEEEE
+              Mes commentaires
             </h3>
-            <p className="mb-2">
-              This is some placeholder content for the Profile tab's associated
-              content. Clicking another tab will toggle the visibility of this
-              one for the next.
-            </p>
-            <p>
-              The tab JavaScript swaps classes to control the content visibility
-              and styling.
-            </p>
+            <CommentFeed session={session} comments={MyComments}/>
           </div>
 
           {/* Ajoutez les autres contenus d'onglets de la même manière */}

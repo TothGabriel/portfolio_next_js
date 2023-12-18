@@ -24,7 +24,7 @@ export const Navbar = () => {
     <nav className="flex justify-between w-full  relative z-30 py-5 px-5 shadow-md">
       <Link href="/" className="flex gap-2 flex-center">
         <Image
-          src="/"
+          src="/_next/image?url=https%3A%2F%2Fpicsum.photos%2F300%2F200&w=1200&q=75"
           alt="logo"
           width={30}
           height={30}

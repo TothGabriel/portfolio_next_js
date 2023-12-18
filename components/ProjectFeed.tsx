@@ -5,7 +5,13 @@ import ProjectCard from "@components/ProjectCard";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-const ProjectCardList = ({ data, handleTagClick, handleEdit }) => {
+const ProjectCardList = ({
+  data,
+  handleTagClick,
+  handleEdit,
+  session,
+  isAdmin,
+}) => {
   return (
     <div className="flex flex-wrap gap-5">
       {data.map((project) => (
@@ -26,6 +32,12 @@ const ProjectFeed = () => {
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+
+  // Extract unique tags from all projects
+  const allTags = Array.from(
+    new Set(allProjects.flatMap((project) => project.tags))
+  );
 
   const fetchProjects = async () => {
     try {
@@ -51,6 +63,12 @@ const ProjectFeed = () => {
     });
   };
 
+  const handleTagClick = (tag) => {
+    setSearchText(tag);
+    const searchResult = filterprojects(tag);
+    setSearchedResults(searchResult);
+  };
+
   const handleSearchChange = (e) => {
     e.preventDefault();
     clearTimeout(searchTimeout);
@@ -65,13 +83,11 @@ const ProjectFeed = () => {
     );
   };
 
-  const handleTagClick = (tagName) => {
-    setSearchText(tagName);
-    const searchResult = filterprojects(tagName);
-    setSearchedResults(searchResult);
+  const handleClear = () => {
+    setSearchText("");
+    setSearchedResults([]);
+    setSelectedTags([]);
   };
-
-  
 
   return (
     <section className="feed">
@@ -79,7 +95,7 @@ const ProjectFeed = () => {
         <div className="container">
           <form className="relative mb-5">
             <label
-              for="default-search"
+              htmlFor="default-search"
               className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
             >
               Search
@@ -95,9 +111,9 @@ const ProjectFeed = () => {
                 >
                   <path
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                   />
                 </svg>
@@ -113,6 +129,31 @@ const ProjectFeed = () => {
               />
             </div>
           </form>
+
+          {/* Boutons de filtrage par tag */}
+          <div className="flex space-x-2 mb-2">
+            {allTags.map((tag) => (
+              <button
+                key={tag}
+                type="button"
+                className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                onClick={() => handleTagClick(tag)}
+              >
+                #{tag}
+              </button>
+            ))}
+          </div>
+
+          {/* Bouton de réinitialisation */}
+          {searchText || selectedTags.length > 0 ? (
+            <button
+              type="button"
+              className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+              onClick={handleClear}
+            >
+              Clear
+            </button>
+          ) : null}
 
           {/* All projects */}
           {searchText ? (

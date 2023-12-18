@@ -15,8 +15,8 @@ const CommentSchema = new Schema({
   },
   created_at : {
     type: Date,
-    required: true
-  }
+    required: false
+  },
 });
 
 const Comment = models.Comment || model('Comment', CommentSchema);

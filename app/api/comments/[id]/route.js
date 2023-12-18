@@ -5,7 +5,7 @@ export const GET = async (request, { params }) => {
   try {
     await connectToDB();
 
-    const comments = await Comment.find({ project_id: params.id });
+    const comments = await Comment.find({ _id: params.id });
     if (!comments) return new Response("Comments Not Found", { status: 404 });
 
     return new Response(JSON.stringify(comments), { status: 200 });
@@ -20,7 +20,6 @@ export const PATCH = async (request, { params }) => {
     await connectToDB();
 
     const { content } = await request.json();
-
     // Vérifier si content est fourni
     if (!content) {
       return new Response("Missing required fields", { status: 400 });
@@ -28,6 +27,9 @@ export const PATCH = async (request, { params }) => {
 
     // Trouver le commentaire existant par ID
     const existingComment = await Comment.findById(params.id);
+
+    console.log("Comment ID:", params.id);
+    console.log("Existing Comment:", existingComment);
 
     if (!existingComment) {
       return new Response("Comment not found", { status: 404 });
@@ -45,15 +47,22 @@ export const PATCH = async (request, { params }) => {
   }
 };
 
+
 export const DELETE = async (request, { params }) => {
   try {
     await connectToDB();
 
     // Find the comment by ID and remove it
-    await Comment.findByIdAndRemove(params.id);
+    const deletedComment = await Comment.findByIdAndDelete(params.id);
+
+    if (!deletedComment) {
+      return new Response("Comment not found", { status: 404 });
+    }
 
     return new Response("Comment deleted successfully", { status: 200 });
   } catch (error) {
+    console.error("Error deleting comment:", error);
     return new Response("Error deleting comment", { status: 500 });
   }
 };
+
